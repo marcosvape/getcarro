@@ -1,0 +1,110 @@
+{
+  "info": {
+    "_postman_id": "a3e0b4f1-c35d-482d-ab4a-48eeeb766286",
+    "name": "get carro",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "17645101"
+  },
+  "item": [
+    {
+      "name": "fetch products",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/product",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "product"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "create order",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"input\": {\n        \"orderName\" : \"test\",\n        \"destinationAddress\": {\n            \"address1\": \"rua dos cravos\",\n            \"city\": \"udi\",\n            \"country\": \"br\",\n            \"countryCode\": \"br\",\n            \"provinceCode\": \"udi\",\n            \"province\": \"udi\",\n            \"zip\": \"38412208\",\n            \"firstName\": \"marcos\",\n            \"lastName\": \"aguiar\",\n            \"email\": \"marcosaguiar@livecom\"\n        },\n        \"lineItems\": [\n            {\n                \"variantId\": \"1\",\n                \"quantity\": 1,\n                \"price\": 1.0\n            }\n        ]\n    }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/order?userId=1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "order"
+          ],
+          "query": [
+            {
+              "key": "userId",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "fetch user orders",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/order/user?userId=1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "order",
+            "user"
+          ],
+          "query": [
+            {
+              "key": "userId",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "fetch order status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/order/1/status",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "order",
+            "1",
+            "status"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
