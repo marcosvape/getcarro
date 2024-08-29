@@ -1,7 +1,6 @@
 package com.getcarro.interview.service;
 
-import com.getcarro.interview.controller.order.dto.LineItem;
-import com.getcarro.interview.controller.order.dto.OrderCreateOrUpdateInput;
+import com.getcarro.interview.controller.order.dto.*;
 import com.getcarro.interview.dao.order.OrderDAO;
 import com.getcarro.interview.model.order.Order;
 import com.getcarro.interview.model.order.OrderStatus;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,7 +26,11 @@ public class OrderService {
     @Autowired
     private ProductService productService;
 
-    public Order createOrder(OrderCreateOrUpdateInput orderCreateInput, Integer userId) {
+    public OrderCreateDataResponse createOrder(OrderCreateOrUpdateInput orderCreateInput, Integer userId) {
+
+        OrderCreateDataResponse returnDataRoot = new OrderCreateDataResponse();
+        OrderCreateOrderResponse returnOrder = new OrderCreateOrderResponse();
+        OrderCreateResponse response = new OrderCreateResponse();
 
         try {
             logger.info("creating a new order {}", orderCreateInput.getInput().getOrderName());
@@ -75,11 +79,30 @@ public class OrderService {
             order.setTotalOrderAmount(orderCreateInput.getInput().getLineItems().size());
             order.setTotalShippingAmount(0.0);
 
-            return this.orderDAO.createOrder(order, userId);
+            Order createdOrder = this.orderDAO.createOrder(order, userId);
 
+            response.setOrder(createdOrder);
+            response.setUserErrors(null);
+            returnOrder.setOrderCreate(response);
+            returnDataRoot.setData(returnOrder);
+
+
+            return returnDataRoot;
         } catch (Exception e) {
             logger.error("Error while creating order", e);
-            return null;
+
+
+            response.setOrder(null);
+            UserError error = new UserError();
+            error.setStatusCode(500);
+            error.setError(e.getMessage());
+            List<UserError> errors = new ArrayList<>();
+            errors.add(error);
+            response.setUserErrors(errors);
+            returnOrder.setOrderCreate(response);
+            returnDataRoot.setData(returnOrder);
+
+            return returnDataRoot;
         }
     }
 
